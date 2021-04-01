@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VerFaceCompare">
+        <activity android:name=".VerIDSessionActivity"></activity>
+
         <meta-data
-            android:name="com.appliedrec.verid.apiSecret"
+            android:name="com.appliedrec.verid.password"
             android:value="dac79733-91f1-4cdd-abb4-f4865cdfd704" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
