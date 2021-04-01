@@ -38,6 +38,7 @@ public class VerIDSessionActivity extends AppCompatActivity implements VerIDFact
     @Override
     public void onVerIDCreated(VerIDFactory verIDFactory, VerID verID) {
         LivenessDetectionSessionSettings settings = new LivenessDetectionSessionSettings();
+        settings.setFaceCaptureCount(1);
         VerIDSession session = new VerIDSession(verID, settings);
         session.setDelegate(this);
         session.start();
