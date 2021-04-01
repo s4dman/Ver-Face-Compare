@@ -27,6 +27,7 @@ import com.google.mlkit.vision.face.FaceDetectorOptions;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .load(bitmap)
                 .into(imageUser);
         imageUser.setImageBitmap(bitmap);
-        int rotationDegree = 270;
+        int rotationDegree = 0;
         InputImage image = InputImage.fromBitmap(bitmap, rotationDegree);
         detectFace(image);
     }
@@ -97,12 +98,18 @@ public class MainActivity extends AppCompatActivity {
                 detector.process(image)
                         .addOnSuccessListener(faces -> {
                             if (faces.size() > 0) {
-                                // Launch Ver-ID Liveness Session
-                            }
+                                Toast.makeText(this, "Face Detected", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(this, AuthenticateActivity.class);
+                                startActivity(intent);
+                            } else Log.d(TAG, String.valueOf(faces.size()));
                         })
                         .addOnFailureListener(
                                 e -> {
                                     Toast.makeText(MainActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "detectFace: " + e.getMessage());
+                                    Log.d(TAG, "detectFace: " + e.getLocalizedMessage());
+                                    Log.d(TAG, "detectFace: " + e.getCause());
+                                    Log.d(TAG, "detectFace: " + Arrays.toString(e.getStackTrace()));
                                 });
     }
 
