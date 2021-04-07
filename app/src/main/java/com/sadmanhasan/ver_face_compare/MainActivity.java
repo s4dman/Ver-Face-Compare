@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public void getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), inImage, "Title", null);
-        Log.d(TAG, "getImageUri: " + Uri.parse(path));
+        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), inImage, "VerImage" + System.currentTimeMillis(), null);
 
         SharedPreferences sharedPref = this.getSharedPreferences("MY_PREF", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -114,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .addOnFailureListener(
                                 e -> {
-                                    Toast.makeText(MainActivity.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     Log.d(TAG, "detectFace: " + Arrays.toString(e.getStackTrace()));
                                 });
     }
