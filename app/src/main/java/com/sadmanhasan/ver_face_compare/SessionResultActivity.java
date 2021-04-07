@@ -30,8 +30,8 @@ import java.io.IOException;
 public class SessionResultActivity extends AppCompatActivity implements ISessionActivity {
 
     private static final String TAG = "SessionResultActivity";
-    private VerID verID;
-    private VerIDSessionResult sessionResult;
+    private VerID mVerID;
+    private VerIDSessionResult mSessionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +41,7 @@ public class SessionResultActivity extends AppCompatActivity implements ISession
         Uri imgURI = Uri.parse(sharedPref.getString(getString(R.string.IMG_URI), ""));
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imgURI);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
             ImageView galleryImg = findViewById(R.id.img_gallery);
             Glide.with(this).load(rotatedBitmap).into(galleryImg);
             faceCompare(rotatedBitmap);
@@ -55,22 +53,21 @@ public class SessionResultActivity extends AppCompatActivity implements ISession
     @SuppressLint("NewApi")
     @Override
     public void setSessionParameters(SessionParameters sessionParameters) {
-        verID = sessionParameters.getVerID();
-        sessionResult = sessionParameters.getSessionResult().orElse(null);
+        mVerID = sessionParameters.getVerID();
+        mSessionResult = sessionParameters.getSessionResult().orElse(null);
     }
 
     @SuppressLint("NewApi")
     private void faceCompare(Bitmap bitmap) throws VerIDCoreException {
+        TextView scoreText = findViewById(R.id.text_score);
         VerIDImageBitmap image = new VerIDImageBitmap(bitmap, ExifInterface.ORIENTATION_NORMAL);
-        Face[] faces = verID.getFaceDetection().detectFacesInImage(bitmap, 1, 0);
+        Face[] faces = mVerID.getFaceDetection().detectFacesInImage(image.createFaceDetectionImage(), 1, 0);
         if (faces.length > 0) {
-            RecognizableFace[] recognizableFaces = verID.getFaceRecognition().createRecognizableFacesFromFaces(faces, image);
-            sessionResult.getFirstFaceCapture(Bearing.STRAIGHT).ifPresent(faceCapture -> {
+            RecognizableFace[] recognizableFaces = mVerID.getFaceRecognition().createRecognizableFacesFromFaces(faces, image);
+            mSessionResult.getFirstFaceCapture(Bearing.STRAIGHT).ifPresent(faceCapture -> {
                 try {
-                    float score = verID.getFaceRecognition().compareSubjectFacesToFaces(recognizableFaces, new RecognizableFace[]{faceCapture.getFace()});
-                    Log.d(TAG, "SessionScore: " + score);
-                    TextView scoreText = findViewById(R.id.text_score);
-                    scoreText.setText((int) score);
+                    float score = mVerID.getFaceRecognition().compareSubjectFacesToFaces(recognizableFaces, new RecognizableFace[]{faceCapture.getFace()});
+                    scoreText.setText(String.format("%s %s", getString(R.string.Score), score));
                 } catch (VerIDCoreException e) {
                     e.printStackTrace();
                 }

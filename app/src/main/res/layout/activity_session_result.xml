@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/img_gallery"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/common_full_open_on_phone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,26 +17,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/img_capture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_gallery" />
-
     <TextView
         android:id="@+id/text_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="@color/white"
         android:textSize="18sp"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_capture" />
+        app:layout_constraintTop_toBottomOf="@+id/img_gallery" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
