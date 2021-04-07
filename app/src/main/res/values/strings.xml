@@ -5,4 +5,5 @@
     <string name="VerImage">VerImage</string>
     <string name="MY_PREF">MY_PREF</string>
     <string name="Select_An_Image">Select an image</string>
+    <string name="Score">Face Comparison Score:</string>
 </resources>

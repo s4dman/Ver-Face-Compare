@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/img_user_face"
-        android:layout_width="0dp"
-        android:layout_height="500dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="40dp"
         android:rotation="0"
         app:layout_constraintEnd_toEndOf="parent"
