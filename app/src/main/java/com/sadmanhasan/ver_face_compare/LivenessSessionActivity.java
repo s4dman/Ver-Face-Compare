@@ -34,7 +34,6 @@ public class LivenessSessionActivity extends AppCompatActivity implements VerIDF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authenticate);
         startLivenessDetectionSession();
     }
 
@@ -77,8 +76,6 @@ public class LivenessSessionActivity extends AppCompatActivity implements VerIDF
 
     @Override
     public <A extends Activity & ISessionActivity> Class<A> getSessionResultActivityClass(IVerIDSession<?> session, VerIDSessionResult result) {
-        Log.d(TAG, "getSessionResultActivityClass: ");
-        Log.d(TAG, "getSessionResultActivityClass: " + result.getFaceCaptures().length);
         return (Class<A>) SessionResultActivity.class;
     }
 }

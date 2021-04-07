@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select an image"), SELECT_PHOTO);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.Select_An_Image)), SELECT_PHOTO);
     }
 
     @Override
@@ -81,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
     public void getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), inImage, "VerImage" + System.currentTimeMillis(), null);
+        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), inImage, getString(R.string.VerImage) + System.currentTimeMillis(), null);
 
-        SharedPreferences sharedPref = this.getSharedPreferences("MY_PREF", MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.MY_PREF), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("IMG_URI", path);
+        editor.putString(getString(R.string.IMG_URI), path);
         editor.apply();
     }
 

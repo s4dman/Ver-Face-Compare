@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Ver-Face-Compare</string>
+    <string name="select_image">Select Image</string>
+    <string name="IMG_URI">IMG_URI</string>
+    <string name="VerImage">VerImage</string>
+    <string name="MY_PREF">MY_PREF</string>
+    <string name="Select_An_Image">Select an image</string>
 </resources>

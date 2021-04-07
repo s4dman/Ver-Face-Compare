@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.exifinterface.media.ExifInterface;
@@ -36,8 +37,8 @@ public class SessionResultActivity extends AppCompatActivity implements ISession
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_result);
-        SharedPreferences sharedPref = this.getSharedPreferences("MY_PREF", MODE_PRIVATE);
-        Uri imgURI = Uri.parse(sharedPref.getString("IMG_URI", ""));
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.MY_PREF), MODE_PRIVATE);
+        Uri imgURI = Uri.parse(sharedPref.getString(getString(R.string.IMG_URI), ""));
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imgURI);
             Matrix matrix = new Matrix();
@@ -68,6 +69,8 @@ public class SessionResultActivity extends AppCompatActivity implements ISession
                 try {
                     float score = verID.getFaceRecognition().compareSubjectFacesToFaces(recognizableFaces, new RecognizableFace[]{faceCapture.getFace()});
                     Log.d(TAG, "SessionScore: " + score);
+                    TextView scoreText = findViewById(R.id.text_score);
+                    scoreText.setText((int) score);
                 } catch (VerIDCoreException e) {
                     e.printStackTrace();
                 }
