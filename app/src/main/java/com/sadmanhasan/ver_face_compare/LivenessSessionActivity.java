@@ -1,34 +1,40 @@
 package com.sadmanhasan.ver_face_compare;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.appliedrec.verid.core2.VerID;
 import com.appliedrec.verid.core2.VerIDFactory;
 import com.appliedrec.verid.core2.VerIDFactoryDelegate;
-import com.appliedrec.verid.core2.session.AuthenticationSessionSettings;
-import com.appliedrec.verid.core2.session.FaceExtents;
 import com.appliedrec.verid.core2.session.LivenessDetectionSessionSettings;
+import com.appliedrec.verid.core2.session.RegistrationSessionSettings;
 import com.appliedrec.verid.core2.session.VerIDSessionResult;
+import com.appliedrec.verid.ui2.ISessionActivity;
 import com.appliedrec.verid.ui2.IVerIDSession;
 import com.appliedrec.verid.ui2.VerIDSession;
 import com.appliedrec.verid.ui2.VerIDSessionDelegate;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class AuthenticateActivity extends AppCompatActivity implements VerIDFactoryDelegate, VerIDSessionDelegate {
+public class LivenessSessionActivity extends AppCompatActivity implements VerIDFactoryDelegate, VerIDSessionDelegate {
 
-    private static final String TAG = "AuthenticateActivity";
-    private VerID verID;
+    private static final String TAG = "LivenessSessionActivity";
+
+    @Override
+    public boolean shouldSessionSpeakPrompts(IVerIDSession<?> session) {
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenticate);
-
         startLivenessDetectionSession();
     }
 
@@ -40,11 +46,11 @@ public class AuthenticateActivity extends AppCompatActivity implements VerIDFact
 
     @Override
     public void onVerIDCreated(VerIDFactory verIDFactory, VerID verID) {
+        Log.d(TAG, "VerID Created: " + verID);
         LivenessDetectionSessionSettings settings = new LivenessDetectionSessionSettings();
         VerIDSession session = new VerIDSession(verID, settings);
         session.setDelegate(this);
         session.start();
-        authenticate(verID);
     }
 
     @Override
@@ -52,32 +58,27 @@ public class AuthenticateActivity extends AppCompatActivity implements VerIDFact
         Log.d(TAG, "onVerIDCreationFailed: " + Arrays.toString(e.getStackTrace()));
     }
 
-    private void authenticate(VerID verID) {
-        int faceCaptureCount = 1;
-        float yawThreshold = 17.0F;
-        float pitchThreshold = 12.0F;
-        FaceExtents expectedFaceExtents = new FaceExtents(0.65F, 0.85F);
-        boolean faceCoveringDetectionEnabled = true;
-        AtomicInteger sessionRunCount = new AtomicInteger(0);
 
-        AuthenticationSessionSettings settings = new AuthenticationSessionSettings("default");
-        settings.setFaceCaptureCount(faceCaptureCount);
-        settings.setYawThreshold(yawThreshold);
-        settings.setPitchThreshold(pitchThreshold);
-        settings.setExpectedFaceExtents(expectedFaceExtents);
-        settings.setFaceCoveringDetectionEnabled(faceCoveringDetectionEnabled);
-        settings.setSessionDiagnosticsEnabled(true);
-        sessionRunCount.set(0);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onSessionFinished(IVerIDSession<?> iVerIDSession, VerIDSessionResult verIDSessionResult) {
+        if (!verIDSessionResult.getError().isPresent()) {
+            Log.d(TAG, "onSessionFinished: " + verIDSessionResult.getFaceCaptures().length);
+        } else {
+            Log.d(TAG, "onSessionFinished: Error " + verIDSessionResult.getError());
+        }
+    }
 
-        VerIDSession authenticationSession;
-        authenticationSession = new VerIDSession(verID, settings);
-        authenticationSession.setDelegate(this);
-        authenticationSession.start();
+    @SuppressLint("NewApi")
+    @Override
+    public boolean shouldSessionDisplayResult(IVerIDSession<?> session, VerIDSessionResult result) {
+        return !(session.getSettings() instanceof RegistrationSessionSettings && !result.getError().isPresent());
     }
 
     @Override
-    public void onSessionFinished(IVerIDSession<?> iVerIDSession, VerIDSessionResult verIDSessionResult) {
-
+    public <A extends Activity & ISessionActivity> Class<A> getSessionResultActivityClass(IVerIDSession<?> session, VerIDSessionResult result) {
+        Log.d(TAG, "getSessionResultActivityClass: ");
+        Log.d(TAG, "getSessionResultActivityClass: " + result.getFaceCaptures().length);
+        return (Class<A>) SessionResultActivity.class;
     }
-
 }

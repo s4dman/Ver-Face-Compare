@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VerFaceCompare">
-        <activity android:name=".AuthenticateActivity"></activity>
-        <activity android:name=".VerIDSessionActivity" />
+        <activity android:name=".SessionResultActivity" />
+        <activity android:name=".LivenessSessionActivity" />
 
         <meta-data
             android:name="com.appliedrec.verid.password"
