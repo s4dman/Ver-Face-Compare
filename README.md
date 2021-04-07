@@ -14,4 +14,5 @@ Facial Comaprison using Ver-ID SDK.
 
 ## Credit
 
-[Ver-ID-Android](https://github.com/AppliedRecognition/Ver-ID-UI-Android)
+* [Ver-ID-Android](https://github.com/AppliedRecognition/Ver-ID-UI-Android)
+* [ML Kit](https://developers.google.com/ml-kit/vision/face-detection/android)
