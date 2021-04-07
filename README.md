@@ -11,3 +11,7 @@ Facial Comaprison using Ver-ID SDK.
 ## Demo
 
 ![VerFaceCompare](https://user-images.githubusercontent.com/9642377/113845322-3ce5cf80-974a-11eb-918a-6b2087b4f4fd.gif)
+
+## Credit
+
+[Ver-ID-Android](https://github.com/AppliedRecognition/Ver-ID-UI-Android)
